@@ -50,7 +50,7 @@
       </el-pagination>
     </div>
     <div v-show="show"
-        style="text-align: center">
+         style="text-align: center">
       <span>没有更多文章啦！</span>
     </div>
   </div>
@@ -60,7 +60,7 @@
 import {getRequest, putRequest} from '@/util/api'
 
 export default {
-  name: 'AlgorithmClassify',
+  name: 'Algorithms',
   inject: ['reload'],
   data () {
     return {
@@ -74,18 +74,12 @@ export default {
       ]
     }
   },
-  watch: {
-    '$route' (to, from) {
-      // data数据操作
-      this.getList()
-    }
-  },
   mounted () {
     this.getList()
   },
   methods: {
     getList () {
-      getRequest('/api/algorithm/classify?pageSize=5&pageNum=' + this.pageInfo.pageNum + '&classify=' + this.$route.params.classify).then(resp => {
+      getRequest('/api/algorithm/' + this.$route.query.searchType + '?pageSize=5&pageNum=' + this.pageInfo.pageNum + '&' + this.$route.query.searchType + '=' + this.$route.query.searchText).then(resp => {
         console.log(resp.data.data.list)
         this.pageInfo.pages = resp.data.data.pages
         this.algorithm = resp.data.data.list

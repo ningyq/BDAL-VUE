@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-        target: 'http://localhost:8080',
+        target: 'http://algorithm.xuptdata.com:8081',
+        // target: 'http://localhost:8081',
         changeOrigin: true,
       }
     },

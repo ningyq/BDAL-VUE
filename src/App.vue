@@ -7,7 +7,7 @@
             <img src="./assets/logoData.png"/>
           </div>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="13">
           <div class="grid-content bg-purple-light">
             <el-menu :default-active="$route.path"
                      class=""
@@ -29,6 +29,17 @@
               </el-submenu>
               <el-menu-item index="/add" route="/add">编写文章</el-menu-item>
             </el-menu>
+          </div>
+        </el-col>
+        <el-col :span="7">
+          <div style="margin-left: 8px">
+            <el-input placeholder="请输入内容" v-model="searchText" clearable="" class="input-with-select">
+              <el-select v-model="searchType" slot="prepend" placeholder="请选择">
+                <el-option label="标题" value="title"></el-option>
+                <el-option label="内容" value="context"></el-option>
+              </el-select>
+              <el-button slot="append" @click="searchAlgorithm" icon="el-icon-search"></el-button>
+            </el-input>
           </div>
         </el-col>
       </el-row>
@@ -54,6 +65,8 @@ export default {
   },
   data () {
     return {
+      searchText: '',
+      searchType: 'title',
       activeIndex: '1',
       isRouterAlive: true,
       options: [
@@ -77,6 +90,9 @@ export default {
       this.$nextTick(() => {
         this.isRouterAlive = true
       })
+    },
+    searchAlgorithm () {
+      this.$router.push({name: 'Algorithms', query: {searchText: this.searchText, searchType: this.searchType}})
     }
   }
 }
@@ -105,5 +121,12 @@ export default {
     /*height: 800px;*/
     min-height: 640px;
     height: 100%;
+  }
+
+  .el-select .el-input {
+    width: 80px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
   }
 </style>

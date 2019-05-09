@@ -4,7 +4,7 @@
          :key="a.id">
       <el-card shadow="hover">
         <div slot="header" class="clearfix">
-          <span style="font-size: 18px; font-weight: bolder; text-align: left" @click="show_button">{{a.title}}</span>
+          <span style="font-size: 18px; font-weight: bolder; text-align: left">{{a.title}}</span>
           <el-button style="float: right;
                padding: 3px 0" @click="showAlgorithm(a.id)" type="text">查看全文</el-button>
         </div>
@@ -23,22 +23,13 @@
         </div>
         <div class="text item">
           <el-row>
-            <el-col :span="6">
-              <div style="text-align: left" v-show="showButton">
-                <el-button @click="edit_algorithm(a.id)" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
-                <el-button :plain="true" @click="dialogVisible = true" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
-                <el-dialog
-                  :visible.sync="dialogVisible"
-                  width="25%">
-                  <span>确认删除？</span>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-                    <el-button size="mini" type="primary" @click="delete_algorithm(a.id)">确 定</el-button>
-                  </span>
-                </el-dialog>
+            <el-col :span="12">
+              <div style="text-align: left">
+                <el-button @click="edit_algorithm(a.id)" type="primary" size="mini" >编辑</el-button>
+                <el-button :plain="true" @click="delete_id(a.id)" type="danger" size="mini">删除</el-button>
               </div>
             </el-col>
-            <el-col :span="18" :offset="p_offset">
+            <el-col :span="12">
               <div style="text-align: right">
                 <span>发表于{{a.createTime}}</span>
               </div>
@@ -73,9 +64,6 @@ export default {
   inject: ['reload'],
   data () {
     return {
-      p_offset: 6,
-      dialogVisible: false,
-      showButton: false,
       show: false,
       pageInfo: {
         pages: 1,
@@ -111,26 +99,31 @@ export default {
       this.pageInfo.pageNum = val
       this.getList()
     },
-    show_button () {
-      if (this.showButton) {
-        this.showButton = false
-        this.p_offset = 6
-      } else {
-        this.showButton = true
-        this.p_offset = 0
-      }
-    },
     edit_algorithm (id) {
       this.$router.push({name: 'EditAlgorithm', query: {id: id}})
     },
     delete_algorithm (id) {
+      console.log(id)
       putRequest('/api/algorithm/delete?id=' + id).then(resq => {
         console.info(resq.data.msg)
-        this.dialogVisible = false
         this.reload()
+      })
+    },
+    delete_id (id) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.delete_algorithm(id)
         this.$message({
-          message: '删除成功',
-          type: 'success'
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
       })
     }
