@@ -15,18 +15,8 @@
           </el-col>
           <el-col :span="12">
             <div style="text-align: right">
-              <el-button @click="edit_algorithm(algorithm.id)" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
-              <el-button :plain="true" @click="dialogVisible = true" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
-              <el-dialog
-                :visible.sync="dialogVisible"
-                width="25%">
-                <span>确认删除？</span>
-                <span slot="footer" class="dialog-footer">
-                    <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-                    <el-button size="mini" type="primary" @click="
-                    delete_algorithm(a.id)">确 定</el-button>
-                  </span>
-              </el-dialog>
+              <el-button @click="edit_algorithm(algorithm.id)" type="primary" size="mini" >编辑</el-button>
+              <el-button :plain="true" @click="delete_id(algorithm.id)" type="danger" size="mini">删除</el-button>
             </div>
           </el-col>
         </el-row>
@@ -42,7 +32,7 @@
 </template>
 
 <script>
-import {getRequest} from '@/util/api'
+import {getRequest, putRequest} from '@/util/api'
 
 export default {
   name: 'Algorithm',
@@ -63,6 +53,33 @@ export default {
     })
   },
   methods: {
+    edit_algorithm (id) {
+      this.$router.push({name: 'EditAlgorithm', query: {id: id}})
+    },
+    delete_algorithm (id) {
+      putRequest('/api/algorithm/delete?id=' + id).then(resq => {
+        console.info(resq.data.msg)
+        this.reload()
+      })
+    },
+    delete_id (id) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.delete_algorithm(id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    }
   }
 }
 </script>

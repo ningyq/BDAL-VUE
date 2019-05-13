@@ -5,7 +5,7 @@
         <el-input v-model="algorithm.title" clearable="" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="分类" prop="classify">
-        <el-select v-model="algorithm.classify" clearable placeholder="请选择分类" size="medium">
+        <el-select v-model="algorithm.classify" clearable placeholder="请选择分类">
           <el-option
             v-for="item in options"
             :key="item.value"

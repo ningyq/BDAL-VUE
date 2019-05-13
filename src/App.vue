@@ -2,12 +2,12 @@
   <el-container>
     <el-header>
       <el-row>
-        <el-col :span="4">
-          <div class="grid-content bg-purple" style="margin-top: 8px">
+        <el-col :span="5">
+          <div class="grid-content bg-purple" style="margin-top: 8px;">
             <img src="./assets/logoData.png"/>
           </div>
         </el-col>
-        <el-col :span="13">
+        <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-menu :default-active="$route.path"
                      class=""
@@ -102,7 +102,7 @@ export default {
   .el-header {
     background-color: #B3C0D1;
     color: #333;
-    text-align: center;
+    /*text-align: center;*/
     line-height: 60px;
   }
 
